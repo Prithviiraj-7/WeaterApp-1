@@ -1,0 +1,234 @@
+/* ========================= */
+/* GLOBAL RESET */
+/* ========================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(-45deg, #0f172a, #1e293b, #0f172a, #1e293b);
+  background-size: 400% 400%;
+  animation: gradientMove 12s ease infinite;
+  color: white;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Animated Background */
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* ========================= */
+/* GLASS UTILITY */
+/* ========================= */
+
+.glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ========================= */
+/* TOP QUOTE BAR */
+/* ========================= */
+
+.top-quote {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85%;
+  padding: 18px 25px;
+  border-radius: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  font-size: 17px;
+  line-height: 1.6;
+  z-index: 10;
+}
+
+.top-quote p {
+  max-width: 800px;
+  text-align: center;
+  opacity: 0.95;
+}
+
+.top-quote button {
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  padding: 10px 14px;
+  border-radius: 50%;
+  cursor: pointer;
+  color: white;
+  transition: 0.3s ease;
+}
+
+.top-quote button:hover {
+  transform: rotate(180deg) scale(1.15);
+  box-shadow: 0 0 15px rgba(96, 165, 250, 0.7);
+}
+
+/* ========================= */
+/* CENTER LAYOUT */
+/* ========================= */
+
+.main-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 120px;
+}
+
+.main-content {
+  text-align: center;
+  width: 100%;
+}
+
+/* ========================= */
+/* LOGO */
+/* ========================= */
+
+.logo {
+  font-size: 110px;
+  font-weight: 900;
+  letter-spacing: 6px;
+  margin-bottom: 60px;
+  background: linear-gradient(90deg, #60a5fa, #3b82f6, #60a5fa);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+/* ========================= */
+/* SEARCH BOX */
+/* ========================= */
+
+.search-box {
+  margin-bottom: 35px;
+}
+
+.search-box input {
+  padding: 16px 20px;
+  width: 300px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  margin-right: 15px;
+  font-size: 15px;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  transition: 0.3s ease;
+}
+
+.search-box input:focus {
+  box-shadow: 0 0 0 2px #60a5fa;
+}
+
+.search-box button {
+  padding: 16px 26px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.search-box button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(59,130,246,0.5);
+}
+
+/* ========================= */
+/* WEATHER CARD */
+/* ========================= */
+
+.weather-card button {
+  margin-top: 18px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+}
+
+.weather-card button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(96, 165, 250, 0.6);
+}
+
+.weather-card button:active {
+  transform: scale(0.96);
+}
+
+/* ========================= */
+/* HISTORY */
+/* ========================= */
+
+.history {
+  margin-top: 35px;
+}
+
+.history h4 {
+  margin-bottom: 15px;
+  opacity: 0.85;
+}
+
+.history-item {
+  padding: 10px 16px;
+  margin: 6px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.08);
+  display: inline-block;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.history-item:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+/* ========================= */
+/* LOADER */
+/* ========================= */
+
+.loading-container {
+  margin-top: 20px;
+}
+
+.loader {
+  margin: 12px auto;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top: 4px solid #60a5fa;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
