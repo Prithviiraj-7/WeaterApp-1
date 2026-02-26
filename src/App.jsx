@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Weather from "./Weather";
+import Weather from "./Components/Weather";
 import "./App.css";
 
 function App() {
@@ -17,25 +17,39 @@ function App() {
     do {
       randomIndex = Math.floor(Math.random() * quotes.length);
     } while (quotes[randomIndex] === quote);
-
     setQuote(quotes[randomIndex]);
   };
 
+  const today = new Date().toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric"
+  }).toUpperCase();
+
   return (
     <>
-      <>
- <div className="top-quote glass">
-    <p>{quote}</p>
-    <button onClick={fetchQuote}>↻</button>
-  </div>
+      {/* Quote bar */}
+      <div className="top-quote glass">
+        <p>{quote}</p>
+        <button onClick={fetchQuote}>↻</button>
+      </div>
 
-  <div className="main-wrapper">
-    <div className="main-content">
-      <h1 className="logo">OutDoor360 ☁</h1>
-      <Weather />
-    </div>
-  </div>
-</>
+      {/* Header */}
+      <header className="site-header">
+        <h1 className="logo">
+          <span className="logo-icon">🌤</span>
+          OutDoor<span className="logo-text">360</span>
+        </h1>
+      </header>
+
+      {/* Main content */}
+      <div className="main-wrapper">
+        <div className="main-content">
+          <div className="date-section">
+            <span className="date-label">{today}</span>
+            <span className="date-arrow">›</span>
+          </div>
+          <Weather />
+        </div>
+      </div>
     </>
   );
 }
