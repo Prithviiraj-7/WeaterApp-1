@@ -2,13 +2,22 @@ import { useState } from "react";
 
 const CONDITION_ICON = (condition = "") => {
   const c = condition.toLowerCase();
-  if (c.includes("thunder")) return "⛈";
-  if (c.includes("rain") || c.includes("drizzle")) return "🌧";
+  if (c.includes("thunder")) return "⛈️";
+  if (c.includes("rain") || c.includes("drizzle")) return "🌧️";
   if (c.includes("snow")) return "❄️";
   if (c.includes("cloud") || c.includes("overcast")) return "⛅";
-  if (c.includes("fog") || c.includes("mist")) return "🌫";
+  if (c.includes("fog") || c.includes("mist")) return "🌫️";
   return "☀️";
 };
+
+const STAT_ITEMS = [
+  { key: "feelslike", label: "Feels Like", icon: "🌡️", fmt: (v, u, fn) => `${fn(v).toFixed(1)}°${u}` },
+  { key: "humidity", label: "Humidity", icon: "💧", fmt: (v) => `${v}%` },
+  { key: "windspeed", label: "Wind", icon: "💨", fmt: (v) => `${v} km/h` },
+  { key: "uvindex", label: "UV Index", icon: "☀️", fmt: (v) => v ?? "—" },
+  { key: "cloudcover", label: "Cloud Cover", icon: "☁️", fmt: (v) => `${v}%` },
+  { key: "visibility", label: "Visibility", icon: "👁️", fmt: (v) => `${v} km` },
+];
 
 function Weather() {
   const [city, setCity] = useState("");
@@ -24,13 +33,14 @@ function Weather() {
     return unit === "C" ? temp : (temp * 9) / 5 + 32;
   };
 
-  const fetchWeather = async () => {
-    if (!city.trim()) return;
+  const fetchWeather = async (overrideCity) => {
+    const target = (overrideCity ?? city).trim();
+    if (!target) return;
     try {
       setError("");
       setLoading(true);
       const res = await fetch(
-        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${city}?unitGroup=metric&key=CQYBKZV6NCD6X8GUL2X35SC8G&contentType=json`
+        `https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/${target}?unitGroup=metric&key=CQYBKZV6NCD6X8GUL2X35SC8G&contentType=json`
       );
       if (!res.ok) throw new Error("Invalid city");
       const data = await res.json();
@@ -48,10 +58,10 @@ function Weather() {
         visibility: cc.visibility,
       });
 
-      if (!history.includes(city.trim())) {
-        setHistory(prev => [city.trim(), ...prev.slice(0, 4)]);
-      }
-      setSearchedCity(city.trim());
+      setHistory(prev =>
+        prev.includes(target) ? prev : [target, ...prev.slice(0, 4)]
+      );
+      setSearchedCity(target);
       setCity("");
     } catch {
       setError("City not found. Please enter a valid city.");
@@ -64,7 +74,7 @@ function Weather() {
   const handleKeyDown = (e) => { if (e.key === "Enter") fetchWeather(); };
 
   const dateStr = new Date().toLocaleDateString("en-US", {
-    month: "numeric", day: "numeric"
+    month: "short", day: "numeric", year: "numeric"
   });
 
   return (
@@ -72,14 +82,15 @@ function Weather() {
 
       {/* Search */}
       <div className="search-box">
+        <span className="search-icon">🔍</span>
         <input
           type="text"
-          placeholder="Enter city name..."
+          placeholder="Search city…"
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={handleKeyDown}
         />
-        <button onClick={fetchWeather} disabled={loading}>
+        <button onClick={() => fetchWeather()} disabled={loading}>
           {loading ? "Loading…" : "Search"}
         </button>
       </div>
@@ -90,8 +101,8 @@ function Weather() {
       {/* Loader */}
       {loading && (
         <div className="loading-container">
-          <p className="loading-text">Fetching weather…</p>
           <div className="loader" />
+          <p className="loading-text">Fetching weather…</p>
         </div>
       )}
 
@@ -99,13 +110,13 @@ function Weather() {
       {weather && !loading && (
         <div className="weather-card glass">
 
-          {/* Day row */}
+          {/* Top row */}
           <div className="card-day-row">
-            <span className="card-day-label">Day</span>
+            <span className="card-day-label">Current Weather</span>
             <span className="card-date-badge">{dateStr}</span>
           </div>
 
-          {/* City name — with spacing below before temp */}
+          {/* City */}
           <p className="weather-city">{searchedCity}</p>
 
           {/* Temp + icon */}
@@ -116,39 +127,25 @@ function Weather() {
                 {convertTemp(weather.temp).toFixed(1)}
               </span>
               <span className="weather-temp-unit">°{unit}</span>
-              <span className="weather-temp-hi">Hi</span>
+              <span className="weather-temp-hi">Live</span>
             </div>
           </div>
 
-          {/* Condition description */}
+          {/* Condition */}
           <p className="weather-condition">{weather.condition}</p>
 
-          {/* Stats grid */}
+          {/* Stats */}
           <div className="weather-stats">
-            <div className="stat-row">
-              <span className="stat-label">Feels Like</span>
-              <span className="stat-value">{convertTemp(weather.feelslike).toFixed(1)}°{unit}</span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-label">Humidity</span>
-              <span className="stat-value">{weather.humidity}%</span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-label">Wind Speed</span>
-              <span className="stat-value">{weather.windspeed} km/h</span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-label">UV Index</span>
-              <span className="stat-value">{weather.uvindex ?? "—"}</span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-label">Cloud Cover</span>
-              <span className="stat-value">{weather.cloudcover}%</span>
-            </div>
-            <div className="stat-row">
-              <span className="stat-label">Visibility</span>
-              <span className="stat-value">{weather.visibility} km</span>
-            </div>
+            {STAT_ITEMS.map(({ key, label, icon, fmt }) => (
+              <div className="stat-row" key={key}>
+                <span className="stat-label">
+                  <span className="stat-icon">{icon}</span> {label}
+                </span>
+                <span className="stat-value">
+                  {fmt(weather[key], unit, convertTemp)}
+                </span>
+              </div>
+            ))}
           </div>
 
           {/* Toggle */}
@@ -170,7 +167,7 @@ function Weather() {
               <span
                 key={i}
                 className="history-item"
-                onClick={() => { setCity(item); }}
+                onClick={() => fetchWeather(item)}
               >
                 {item}
               </span>

@@ -1,175 +1,211 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
-* {
+*,
+*::before,
+*::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Inter', Arial, sans-serif;
+}
+
+:root {
+  --blue-900: #0d1b3e;
+  --blue-800: #0f2460;
+  --blue-600: #1d4ed8;
+  --blue-500: #3b82f6;
+  --blue-400: #60a5fa;
+  --blue-300: #93c5fd;
+  --slate-900: #0b0f1a;
+  --slate-800: #111827;
+  --slate-700: #1a2640;
+  --slate-600: #1e3a5f;
+  --text-primary: #f0f6ff;
+  --text-secondary: #94a3b8;
+  --text-muted: #4b6080;
+  --accent: #38bdf8;
+  --accent-glow: rgba(56, 189, 248, 0.25);
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --card-bg: rgba(15, 25, 50, 0.75);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: #0d1117;
-  color: #e2e8f0;
+  font-family: 'Inter', 'Space Grotesk', system-ui, sans-serif;
+  background: var(--slate-900);
+  color: var(--text-primary);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* ── Top quote bar ── */
+/* ── Animated background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 10% -10%, rgba(29, 78, 216, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 90% 100%, rgba(56, 189, 248, 0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 80% at 50% 50%, rgba(15, 36, 96, 0.35) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Animated floating orbs */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle 300px at 20% 30%, rgba(59, 130, 246, 0.07), transparent),
+    radial-gradient(circle 200px at 80% 70%, rgba(56, 189, 248, 0.06), transparent);
+  pointer-events: none;
+  z-index: 0;
+  animation: floatingOrbs 12s ease-in-out infinite alternate;
+}
+
+@keyframes floatingOrbs {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+
+  to {
+    transform: translate(20px, -30px) scale(1.04);
+  }
+}
+
+#root {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── Top Quote Bar ── */
 .top-quote.glass {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  background: rgba(30, 58, 138, 0.18);
-  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
-  padding: 7px 24px;
-  font-size: 12px;
-  color: #93c5fd;
-  letter-spacing: 0.04em;
+  gap: 12px;
+  background: rgba(29, 78, 216, 0.12);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.18);
+  padding: 9px 28px;
+  font-size: 11.5px;
+  color: var(--blue-300);
+  letter-spacing: 0.06em;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 .top-quote.glass p {
   font-style: italic;
+  font-weight: 400;
+  opacity: 0.9;
 }
 
 .top-quote.glass button {
   background: transparent;
   border: none;
-  color: #60a5fa;
+  color: var(--blue-400);
   cursor: pointer;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1;
-  padding: 0 2px;
-  transition: transform 0.3s;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s;
 }
 
 .top-quote.glass button:hover {
-  transform: rotate(180deg);
+  transform: rotate(180deg) scale(1.2);
+  color: var(--accent);
 }
 
-/* ── Header / Nav ── */
+/* ── Site Header ── */
 .site-header {
-  background: #0a0f1e;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.2);
+  background: rgba(10, 15, 35, 0.8);
+  border-bottom: 1px solid rgba(59, 130, 246, 0.18);
   display: flex;
   align-items: center;
-  gap: 0;
-  padding: 0 32px;
+  padding: 0 36px;
   position: sticky;
   top: 0;
   z-index: 100;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  height: 58px;
 }
 
 .logo {
-  font-size: 18px !important;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 17px !important;
   font-weight: 700;
   color: #ffffff !important;
-  letter-spacing: -0.01em;
-  padding: 14px 0;
+  letter-spacing: -0.02em;
   margin: 0 !important;
   white-space: nowrap;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
+  text-decoration: none;
 }
 
 .logo-icon {
-  font-size: 20px;
+  font-size: 22px;
+  filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.5));
 }
 
 .logo-text {
-  font-size: 14px;
-  color: #3b82f6;
-  font-weight: 500;
-}
-
-.header-divider {
-  width: 1px;
-  height: 28px;
-  background: rgba(59, 130, 246, 0.2);
-  margin: 0 24px;
-}
-
-.nav-tabs {
-  display: flex;
-  align-items: center;
-  gap: 0;
-  list-style: none;
-  flex: 1;
-}
-
-.nav-tabs li a {
-  display: block;
-  padding: 18px 16px;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: #64748b;
-  text-decoration: none;
-  border-bottom: 2px solid transparent;
-  transition: color 0.2s, border-color 0.2s;
-  white-space: nowrap;
-}
-
-.nav-tabs li a:hover,
-.nav-tabs li a.active {
-  color: #e2e8f0;
-  border-bottom-color: #3b82f6;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-left: auto;
-  color: #64748b;
   font-size: 13px;
+  color: var(--blue-400);
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--blue-400), var(--accent));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-/* ── Main layout ── */
+/* ── Main Layout ── */
 .main-wrapper {
   flex: 1;
   display: flex;
   justify-content: center;
-  padding: 40px 24px 60px;
+  padding: 48px 24px 80px;
 }
 
 .main-content {
   width: 100%;
-  max-width: 780px;
+  max-width: 700px;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 32px;
 }
 
-/* ── Date section ── */
+/* ── Date Section ── */
 .date-section {
-  padding: 18px 0 14px;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.12);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-bottom: 16px;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.1);
 }
 
 .date-label {
-  font-size: 11px;
-  letter-spacing: 0.14em;
+  font-size: 10.5px;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: #64748b;
-  font-weight: 500;
+  color: var(--text-muted);
+  font-weight: 600;
 }
 
 .date-arrow {
-  color: #3b82f6;
-  font-size: 18px;
-}
-
-/* ── Card ── */
-.card {
-  background: #1f2937;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0 0 0 / 0.3);
+  color: var(--blue-500);
+  font-size: 20px;
+  opacity: 0.6;
 }
