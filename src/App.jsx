@@ -4,10 +4,10 @@ import "./App.css";
 
 function App() {
   const quotes = [
-    "Discipline beats motivation.",
-    "Consistency builds greatness.",
-    "Win the day.",
-    "Pressure creates diamonds."
+    "Hello Joshitha Madam.",
+    "How are you josta madam.",
+    "Hope ur day is going well.",
+    "You are one stupid u know."
   ];
 
   const [quote, setQuote] = useState(quotes[0]);
