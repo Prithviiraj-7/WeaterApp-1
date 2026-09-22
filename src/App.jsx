@@ -4,10 +4,10 @@ import "./App.css";
 
 function App() {
   const quotes = [
-    "Hello Joshitha Madam.",
-    "How are you josta madam.",
-    "Hope ur day is going well.",
-    "You are one stupid u know."
+    "Consistency beats Motivation.",
+    "Every single drops of water combine to form the ocean.",
+    "Make it Day one,Instead of Day one.",
+    "Work like there is no tomorrow."
   ];
 
   const [quote, setQuote] = useState(quotes[0]);
